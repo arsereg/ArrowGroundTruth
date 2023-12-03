@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ArrowGenerator.iml" filepath="$PROJECT_DIR$/.idea/ArrowGenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ArrowGroundTruth.iml" filepath="$PROJECT_DIR$/.idea/ArrowGroundTruth.iml" />
     </modules>
   </component>
 </project>

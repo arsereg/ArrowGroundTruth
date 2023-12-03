@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+
 class_names = {
             "North": 0,
             "North East": 1,
@@ -21,14 +22,10 @@ reverse_class_names = {v: k for k, v in class_names.items()}
 predictions = {}
 
 def train_new_model():
-    archive = tf.keras.utils.image_dataset_from_directory(directory='./images')
-    data_dir = pathlib.Path('./images')
-    arrows = list(data_dir.glob('*/*.png'))
-
     datasetPercentageForTraining = 0.7
     datasetPercentageForTesting = 0.3
 
-    data = pd.read_csv('./arrow_data.csv')
+    data = pd.read_csv('../ArrowGenerator/arrow_data.csv')
     dataCount = len(data)
     trainingCount = int(dataCount * datasetPercentageForTraining)
     testingCount = int(dataCount * datasetPercentageForTesting)
@@ -43,14 +40,15 @@ def train_new_model():
     testingLabels = []
 
     for index, row in trainingData.iterrows():
-        image = cv2.imread(f"./images/arrows/{row['Arrow Number']}")
+        image = cv2.imread(f"../ArrowGenerator/trainingImages/arrows/{row['Arrow Number']}")
         ret, thresholdhed_image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY_INV)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) / 255.0
         trainingImages.append(image)
         trainingLabels.append(class_names[row['Direction']])
+    print("Training data loaded")
 
     for index, row in testingData.iterrows():
-        image = cv2.imread(f"./images/arrows/{row['Arrow Number']}")
+        image = cv2.imread(f"../ArrowGenerator/trainingImages/arrows/{row['Arrow Number']}")
         ret, thresholdhed_image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY_INV)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) / 255.0
         testingImages.append(image)
@@ -123,13 +121,13 @@ def plot_value_array(i, predictions_array, true_label):
 
 def get_test_data():
     # This part is repeated from your train_new_model function
-    data = pd.read_csv('./arrow_data_big.csv')
+    data = pd.read_csv('../ArrowGenerator/testing_arrow_data.csv')
 
     testingImages = []
     testingLabels = []
 
     for index, row in data.iterrows():
-        image = cv2.imread(f"./testingImages/arrows/{row['Arrow Number']}")
+        image = cv2.imread(f"../ArrowGenerator/testingImages/arrows/{row['Arrow Number']}")
         ret, thresholdhed_image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY_INV)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) / 255.0
         testingImages.append(image)
@@ -173,6 +171,8 @@ def predict_image(model, testingImages, testingLabels):
 def list_models():
     return [f for f in os.listdir('models/') if os.path.isdir(os.path.join('models/', f))]
 
+def check_gpu():
+    print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 def main():
     choice = input("Do you want to load a saved model? (y/n): ").strip().lower()
     if choice == 'y':
@@ -193,4 +193,5 @@ def main():
 
 
 if __name__ == "__main__":
+    check_gpu()
     main()

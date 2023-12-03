@@ -1,0 +1,6 @@
+./ArrowGenerator/testingImages/
+./ArrowGenerator/trainingImages/
+./ArrowGenerator/testingImages/*
+./ArrowGenerator/trainingImages/*
+./ArrowGenerator/arrow_data.csv
+./ArrowGenerator/testing_arrow_data.csv

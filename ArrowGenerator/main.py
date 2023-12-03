@@ -10,9 +10,18 @@ from tqdm import tqdm
 IMAGE_SIZE = (500, 500)
 ARROW_LENGTH = 300
 ARROW_CANVAS_SIZE = int(math.ceil(math.sqrt(2) * ARROW_LENGTH))  # Diagonal of the bounding box
+
 OUTPUT_DIR = "arrows"
-CSV_FILE = "arrow_data_big.csv"
-NUM_ARROWS = 200_000  # Set the number of arrows you want to generate here
+CSV_FILE = "arrow_data.csv"
+trainingData = input('Create Training or Testing data? (1. Training / 2. Testing) ')
+
+if trainingData == '2':
+    OUTPUT_DIR = 'testingImages/' + OUTPUT_DIR
+    CSV_FILE = 'testing_' + CSV_FILE
+else:
+    OUTPUT_DIR = 'trainingImages/' + OUTPUT_DIR
+
+NUM_ARROWS = 200_000  # Set the number of images you want to generate here
 FINAL_SIZE = (56, 56)
 
 # Ensure output directory exists
@@ -74,7 +83,7 @@ def determine_direction(angle):
 
 # Main function
 def main():
-    for arrow_count in tqdm(range(1, NUM_ARROWS + 1), desc="Generating arrows"):  # Using tqdm for progress bar
+    for arrow_count in tqdm(range(1, NUM_ARROWS + 1), desc="Generating images"):  # Using tqdm for progress bar
         angle = random.randint(0, 359)
         direction = determine_direction(angle)
 
